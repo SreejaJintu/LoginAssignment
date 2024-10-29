@@ -1,0 +1,29 @@
+.addUser{
+    width: 25%;
+    margin: 25px auto;
+    background-color: rgb(206, 234, 236);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 8px rgba(0,0,0,0.55);
+}
+.inputgroup{
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+label{
+    margin-top: 10px;
+}
+
+input{
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.login{
+    text-align: center;
+}
+
+
