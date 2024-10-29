@@ -21,7 +21,7 @@ app.use(cookieParser());
 mongoose.connect("mongodb://127.0.0.1:27017/newdb");
 
 const verifyUser = (req, res, next) => {
-    const token = req.cookies.token; // Use req.cookies
+    const token = req.cookies.token; 
     console.log("Token:", token);
 
     if (!token) {
