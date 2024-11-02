@@ -46,6 +46,7 @@ app.get('/', (req, res) => {
     res.send('server started');
 });
 
+
 app.get('/home', verifyUser, (req, res) => {
     return res.json("Success");
 });
