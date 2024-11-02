@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -5,6 +6,11 @@ const userdata = require('./models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+
+
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("Connected to MongoDB Atlas"))
+.catch(err => console.error("MongoDB Atlas connection error:", err));
 
 const PORT = process.env.PORT || 8080;
 
@@ -18,7 +24,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect("mongodb://127.0.0.1:27017/newdb");
+// mongoose.connect("mongodb://127.0.0.1:27017/newdb");
 
 const verifyUser = (req, res, next) => {
     const token = req.cookies.token; 
@@ -67,16 +73,23 @@ app.post('/login', async (req, res) => {
 app.post('/submit', (req, res) => {
     try {
         const { username, email, password } = req.body;
+
+        if (!password || typeof password !== 'string') {
+            return res.status(400).json({ error: "Password must be a valid string." });
+        }
+
         bcrypt.hash(password, 10)
             .then(hash => {
                 userdata.create({ username, email, password: hash })
                     .then(user => res.json(user))
                     .catch(err => res.json(err));
-            });
+            })
+            .catch(err => res.status(500).json({ error: "Error hashing password" }));
     } catch (err) {
-        res.json(err);
+        res.status(500).json(err);
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
